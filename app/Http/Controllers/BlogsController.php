@@ -12,9 +12,11 @@ class BlogsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index():View
+    public function index(): View
     {
-        return view('blogs.index');
+        return view('blogs.index', [
+            'blogs' => Blogs::with('user')->latest()->get(),
+        ]);
     }
 
     /**
@@ -28,7 +30,7 @@ class BlogsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request):RedirectResponse
+    public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
             'message' => 'required|string|max:255',
