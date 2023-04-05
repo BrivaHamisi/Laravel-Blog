@@ -52,17 +52,31 @@ class BlogsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Blogs $blogs)
+    public function edit(Blogs $blog): View
     {
-        //
+        $this->authorize('update', $blog);
+
+        return view('blogs.edit', [
+            'blog' => $blog,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Blogs $blogs)
+    public function update(Request $request, Blogs $blog):RedirectResponse
     {
-        //
+//        dd($blog,$request->all());
+
+        $this->authorize('update', $blog);
+
+        $validated = $request->validate([
+            'message' => 'required|string|max:255',
+        ]);
+
+        $blog->update($validated);
+
+        return redirect(route('blogs.index'));
     }
 
     /**
