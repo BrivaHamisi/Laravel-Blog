@@ -82,8 +82,12 @@ class BlogsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blogs $blogs)
+    public function destroy(Blogs $blog):RedirectResponse
     {
-        //
+        $this->authorize('delete', $blog);
+
+        $blog->delete();
+
+        return redirect(route('blogs.index'));
     }
 }
